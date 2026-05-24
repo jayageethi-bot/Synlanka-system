@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1b5e20">
+<title>Synlanka අවහන්හල් - එළවළු මිලදී ගැනීමේ රටාව</title>
+<style>
+:root{
+  --p:#1b5e20;--pl:#2e7d32;--pd:#0d3b10;--pm:#388e3c;
+  --accent:#e65100;
+  --bg:#f0f2f5;--card:#ffffff;
+  --t:#1a1a1a;--ts:#666;--border:#e0e0e0;
+  --danger:#c62828;
+  --shadow:0 2px 12px rgba(0,0,0,.08);--r:14px;--rs:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Segoe UI','Noto Sans Sinhala','Noto Sans Tamil',sans-serif;background:var(--bg);color:var(--t);line-height:1.5;overflow-x:hidden;padding-bottom:90px}
+
+/* ── HEADER ── */
+.hdr{background:linear-gradient(135deg,var(--p) 0%,var(--pd) 100%);color:#fff;position:sticky;top:0;z-index:900;box-shadow:var(--shadow)}
+.hdr-top{display:flex;justify-content:space-between;align-items:center;padding:12px 16px 8px}
+.hdr-title{font-size:1.05rem;font-weight:700;line-height:1.3}
+.hdr-sub{font-size:.72rem;opacity:.85;margin-top:2px}
+.lang-tog{display:flex;background:rgba(255,255,255,.15);border-radius:20px;padding:3px;gap:3px}
+.lang-btn{border:none;background:transparent;color:rgba(255,255,255,.8);padding:6px 12px;border-radius:17px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .3s;font-family:inherit}
+.lang-btn.active{background:#fff;color:var(--p);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+
+/* ── NAV ── */
+nav{display:flex;background:var(--pm);overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+.nav-tab{background:transparent;border:none;color:rgba(255,255,255,.75);padding:11px 16px;cursor:pointer;font-size:.82rem;font-weight:600;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s;font-family:inherit}
+.nav-tab.active,.nav-tab:hover{color:#fff;border-bottom-color:#a5d6a7}
+.nav-tab.active{background:rgba(0,0,0,.15)}
+
+/* ── SCREENS ── */
+.screen{display:none;animation:fadeIn .28s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── CONTAINER / CARD ── */
+.con{padding:14px;max-width:680px;margin:0 auto}
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden}
+.card-hdr{padding:13px 16px;background:linear-gradient(90deg,var(--pl),var(--p));color:#fff;font-weight:700;font-size:.97rem;display:flex;align-items:center;gap:8px}
+.card-body{padding:16px}
+.card-body.compact{padding:12px}
+
+/* ── FORM ── */
+.fg{margin-bottom:15px}
+.flabel{display:block;font-weight:600;font-size:.88rem;margin-bottom:6px;color:var(--t)}
+.flabel .req{color:var(--danger);margin-left:2px}
+.fhint{font-size:.78rem;color:var(--ts);margin-top:4px}
+.fi,.fta{width:100%;padding:11px 13px;border:2px solid var(--border);border-radius:var(--rs);font-size:.97rem;font-family:inherit;background:#fff;transition:border-color .25s}
+.fi:focus,.fta:focus{outline:none;border-color:var(--pl)}
+.fta{min-height:76px;resize:vertical}
+.fi.err,.fta.err{border-color:var(--danger)!important}
+.emsg{color:var(--danger);font-size:.78rem;margin-top:4px;display:none}
+.emsg.show{display:block}
+
+/* ── SEGMENT ── */
+.seg-grp{display:flex;background:var(--bg);border-radius:var(--rs);padding:4px;gap:4px}
+.seg-btn{flex:1;padding:11px;border:none;background:transparent;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;color:var(--ts);transition:all .25s;font-family:inherit;text-align:center}
+.seg-btn.active{background:var(--p);color:#fff;box-shadow:0 2px 8px rgba(27,94,32,.3)}
+
+/* ── PREP RADIO CARDS ── */
+.prep-cards{display:flex;flex-direction:column;gap:10px}
+.prep-card{display:flex;align-items:flex-start;gap:12px;padding:13px 14px;border:2px solid var(--border);border-radius:var(--rs);cursor:pointer;transition:all .2s;background:#fff}
+.prep-card.selected{border-color:var(--pl);background:#f1f8e9}
+.prep-card input[type=radio]{width:18px;height:18px;margin-top:3px;accent-color:var(--p);flex-shrink:0;cursor:pointer}
+.prep-card-label{flex:1}
+.prep-card-title{font-weight:700;font-size:.9rem;color:var(--pd)}
+.prep-card-sub{font-size:.78rem;color:var(--ts);margin-top:2px}
+
+/* ── BIZ DROPDOWN ── */
+.biz-search-wrap{position:relative}
+.biz-dd{position:absolute;top:100%;left:0;right:0;background:#fff;border:2px solid var(--pl);border-top:none;border-radius:0 0 var(--rs) var(--rs);z-index:200;max-height:220px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.1);display:none}
+.biz-dd.open{display:block}
+.biz-dd-item{padding:11px 14px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s}
+.biz-dd-item:last-child{border-bottom:none}
+.biz-dd-item:hover{background:#f1f8e9}
+.bdi-name{font-weight:600;font-size:.9rem}
+.bdi-sub{font-size:.76rem;color:var(--ts);margin-top:2px}
+.info-chip{display:inline-flex;align-items:center;gap:6px;background:#e8f5e9;border:1.5px solid var(--pl);border-radius:20px;padding:5px 11px;font-size:.83rem;font-weight:600;color:var(--pd);margin-top:6px;flex-wrap:wrap}
+.biz-clear{background:none;border:none;cursor:pointer;color:var(--ts);font-size:1rem;padding:0 0 0 4px}
+
+/* ── DAY CHIPS – single select ── */
+.day-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.day-chip{padding:11px 4px;border:2px solid var(--border);background:#fff;border-radius:var(--rs);text-align:center;cursor:pointer;transition:all .2s;font-weight:700;font-size:.83rem}
+.day-chip .den{font-size:.7rem;color:var(--ts);display:block;margin-top:2px}
+.day-chip.sel{background:var(--p);color:#fff;border-color:var(--p);box-shadow:0 4px 12px rgba(27,94,32,.25);transform:scale(1.02)}
+.day-chip.sel .den{color:rgba(255,255,255,.85)}
+
+/* ── SPICE DAY COUNTER ── */
+.spice-day-card{background:#fff8f0;border:2px solid #ffcc80;border-radius:var(--rs);padding:14px 16px;margin-bottom:14px}
+.spice-day-title{font-weight:700;font-size:.92rem;color:#bf360c;margin-bottom:6px}
+.spice-day-sub{font-size:.78rem;color:#795548;margin-bottom:12px}
+.spice-stepper{display:flex;align-items:center;justify-content:center;gap:14px}
+.spice-step-btn{width:42px;height:42px;border:none;background:var(--accent);color:#fff;border-radius:50%;font-size:1.4rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;user-select:none}
+.spice-step-btn:active{transform:scale(.9)}
+.spice-step-val{width:72px;height:46px;border:2px solid var(--border);border-radius:var(--rs);text-align:center;font-size:1.2rem;font-weight:700;background:#fff;font-family:inherit}
+
+/* ── CATEGORY ACCORDION ── */
+.pcat{margin-bottom:4px;border-radius:var(--rs);overflow:hidden;border:1.5px solid var(--border)}
+.cat-hdr{padding:12px 14px;background:linear-gradient(90deg,#e8f5e9,#c8e6c9);color:var(--pd);font-weight:700;font-size:.9rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+.cat-hdr .cen{font-size:.74rem;opacity:.7;margin-top:1px}
+.cat-chev{font-size:1.2rem;transition:transform .25s;color:var(--p)}
+.pcat.collapsed .cat-chev{transform:rotate(-90deg)}
+.pcat.collapsed .cat-body{display:none}
+.cat-body{background:#fff}
+
+/* ── PRODUCT ROW ── */
+.prow{padding:11px 13px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:10px;transition:background .15s}
+.prow:last-child{border-bottom:none}
+.prow.has-qty{background:#f1f8e9}
+.pname{font-weight:700;font-size:.9rem}
+.pname-sub{font-size:.74rem;color:var(--ts);margin-top:1px}
+.pqty-badge{font-size:.74rem;font-weight:700;color:var(--p);margin-top:3px}
+
+/* ── STEPPER ── */
+.stepper{display:flex;align-items:center;gap:5px}
+.stp-btn{width:34px;height:34px;border:none;background:var(--pl);color:#fff;border-radius:50%;font-size:1.2rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;user-select:none;flex-shrink:0}
+.stp-btn:active{transform:scale(.9);background:var(--p)}
+.stp-val{width:54px;height:38px;border:2px solid var(--border);border-radius:var(--rs);text-align:center;font-size:.95rem;font-weight:700;background:#fff;font-family:inherit}
+.stp-val:focus{outline:none;border-color:var(--pl)}
+
+/* ── UNIT TOGGLE ── */
+.unit-tog{display:flex;background:var(--bg);border-radius:20px;padding:3px;gap:3px;margin-bottom:4px}
+.unit-btn{border:none;padding:4px 11px;border-radius:17px;background:transparent;font-size:.74rem;font-weight:700;cursor:pointer;color:var(--ts);font-family:inherit;transition:all .25s}
+.unit-btn.active{background:var(--p);color:#fff}
+.unit-btn.sp-active{background:var(--accent);color:#fff}
+
+/* ── STICKY BOTTOM BAR ── */
+.bot-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;box-shadow:0 -4px 20px rgba(0,0,0,.1);padding:10px 14px;display:flex;gap:8px;z-index:1000}
+.btn{flex:1;padding:13px 8px;border:none;border-radius:var(--rs);font-size:.88rem;font-weight:700;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:5px;font-family:inherit;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn-p{background:linear-gradient(135deg,var(--pl) 0%,var(--p) 100%);color:#fff;box-shadow:0 4px 14px rgba(27,94,32,.3)}
+.btn-s{background:var(--bg);color:var(--t);border:2px solid var(--border)}
+.btn-d{background:var(--danger);color:#fff}
+.badge{display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,.3);color:#fff;border-radius:12px;padding:2px 8px;font-size:.7rem;font-weight:700;min-width:20px}
+
+/* ── PIN OVERLAY ── */
+#admin-auth-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+#admin-auth-overlay.open{display:flex}
+.pin-card{background:#fff;border-radius:var(--r);width:100%;max-width:360px;margin:16px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.25)}
+.pin-card-hdr{padding:18px 16px;background:linear-gradient(135deg,var(--p),var(--pd));color:#fff;text-align:center}
+.pin-card-icon{font-size:2.4rem;margin-bottom:8px}
+.pin-card-title{font-size:1.05rem;font-weight:700}
+.pin-card-sub{font-size:.8rem;opacity:.85;margin-top:4px}
+.pin-card-body{padding:20px 24px}
+.pin-disp{display:flex;gap:16px;justify-content:center;margin:16px 0 20px}
+.pin-dot{width:18px;height:18px;border-radius:50%;border:3px solid var(--border);background:#fff;transition:all .25s}
+.pin-dot.filled{background:var(--p);border-color:var(--p)}
+.pin-dot.error{background:var(--danger);border-color:var(--danger)}
+.pin-hint{text-align:center;font-size:.78rem;color:var(--ts);margin-bottom:12px}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:270px;margin:0 auto}
+.pin-key{aspect-ratio:1;border:2px solid var(--border);background:#fff;border-radius:var(--rs);font-size:1.4rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:inherit;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.pin-key:active{transform:scale(.92);background:#e8f5e9;border-color:var(--pl)}
+.pin-key.pclr{background:#fff3f3;border-color:#ffcdd2;color:var(--danger);font-size:.9rem}
+.pin-key.pback{background:#f9f9f9;font-size:1.1rem}
+.pin-login-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--pl),var(--p));color:#fff;border:none;border-radius:var(--rs);font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:16px;transition:all .25s}
+.pin-login-btn:active{transform:scale(.97)}
+.pin-err{color:var(--danger);font-size:.78rem;text-align:center;margin-top:8px;display:none}
+.pin-err.show{display:block}
+
+/* ── BIZ CARDS ── */
+.biz-card{padding:13px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;display:flex;justify-content:space-between;align-items:center}
+.biz-card:last-child{border-bottom:none}
+.biz-card:active{background:#f5f5f5}
+.biz-name{font-weight:700;font-size:.95rem}
+.biz-meta{font-size:.78rem;color:var(--ts);margin-top:3px}
+
+/* ── TABLES ── */
+.stbl{width:100%;border-collapse:collapse;font-size:.86rem}
+.stbl th,.stbl td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--border)}
+.stbl th{background:#e8f5e9;font-weight:700;color:var(--pd)}
+.stbl .qty{font-weight:700;color:var(--p);text-align:right}
+.stbl tr:last-child td{border-bottom:none}
+.rtbl{width:100%;border-collapse:collapse;font-size:.76rem;min-width:520px}
+.rtbl th{background:var(--p);color:#fff;padding:8px 9px;text-align:left;font-size:.72rem;white-space:nowrap}
+.rtbl td{padding:7px 9px;border-bottom:1px solid var(--border);vertical-align:middle}
+.rtbl tr:nth-child(even) td{background:#f9fbe7}
+.rtbl .dc{text-align:center;font-weight:700;color:var(--p)}
+.rtbl .de{text-align:center;color:#bbb}
+.biz-row-label{font-weight:700;color:var(--pd);vertical-align:top;padding-top:10px;font-size:.8rem}
+
+/* ── MODAL ── */
+.mover{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1800;backdrop-filter:blur(3px);align-items:flex-end;justify-content:center}
+.mover.open{display:flex}
+.modal{background:#fff;width:100%;max-width:680px;max-height:92vh;border-radius:var(--r) var(--r) 0 0;overflow:hidden;display:flex;flex-direction:column;animation:slideUp .28s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.m-hdr{padding:15px;background:linear-gradient(135deg,var(--p),var(--pd));color:#fff;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.m-title{font-size:1rem;font-weight:700}
+.m-close{width:34px;height:34px;border:none;background:rgba(255,255,255,.2);color:#fff;border-radius:50%;font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.m-body{flex:1;overflow-y:auto;padding:15px}
+.m-foot{padding:12px 14px;border-top:2px solid var(--border);display:flex;gap:8px;flex-shrink:0}
+.m-foot .btn{flex:1}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:98px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--pd);color:#fff;padding:12px 26px;border-radius:26px;font-weight:600;font-size:.9rem;z-index:3000;opacity:0;transition:all .3s;box-shadow:0 4px 16px rgba(0,0,0,.25);white-space:nowrap;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:30px 20px;color:var(--ts)}
+.empty-icon{font-size:2.8rem;margin-bottom:8px;opacity:.4}
+
+/* ── NEXT BUTTON (inline after day/spice) ── */
+.next-btn{display:block;width:100%;margin-top:14px;padding:14px;background:linear-gradient(135deg,var(--pl) 0%,var(--p) 100%);color:#fff;border:none;border-radius:var(--rs);font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(27,94,32,.28);transition:all .25s;letter-spacing:.02em}
+.next-btn:active{transform:scale(.97);box-shadow:0 2px 6px rgba(27,94,32,.2)}
+.next-btn.waiting{background:linear-gradient(135deg,#90a4ae,#78909c);box-shadow:none;cursor:not-allowed}
+
+/* ── CLEAR ALL CARD ── */
+.clear-all-card{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;margin:14px}
+.clear-all-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--danger),#8b0000);color:#fff;border:none;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .25s}
+.clear-all-btn:active{transform:scale(.98)}
+
+/* ── BIZ DETAIL HEADER ── */
+.biz-detail-hdr{background:linear-gradient(90deg,var(--pl),var(--p));color:#fff;padding:11px 13px;border-radius:var(--rs) var(--rs) 0 0;font-weight:700;font-size:.9rem;margin-bottom:0}
+.pat-section-hdr{background:#e8f5e9;padding:9px 12px;font-weight:700;font-size:.84rem;color:var(--pd);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--pl);border-radius:3px}
+@media(max-width:420px){.btn{font-size:.8rem;padding:11px 5px}}
+@media print{
+  body{background:#fff;padding-bottom:0}
+  .hdr,.bot-bar,#admin-auth-overlay,.mover,.toast{display:none!important}
+  .screen{display:none!important}.screen.active{display:block!important}
+  .card{box-shadow:none;border:1px solid #ddd}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header class="hdr">
+  <div class="hdr-top">
+    <div>
+      <div class="hdr-title">Synlanka අවහන්හල් 🌿</div>
+      <div class="hdr-sub">එළවළු මිලදී ගැනීමේ රටාව ඉදිරිපත් කිරීමේ පද්ධතිය</div>
+    </div>
+    <div class="lang-tog">
+      <button class="lang-btn active" onclick="setLang('si')">සිංහල</button>
+      <button class="lang-btn" onclick="setLang('ta')">தமிழ்</button>
+    </div>
+  </div>
+  <nav id="main-nav">
+    <button class="nav-tab active" data-screen="register" onclick="navTo('register')">ලියාපදිංචිය</button>
+    <button class="nav-tab" data-screen="config" onclick="navTo('config')">මිලදී ගැනීමේ රටාව</button>
+    <button class="nav-tab" data-screen="reports" onclick="triggerReportsNav()">වාර්තා</button>
+  </nav>
+</header>
+
+<!-- ══════════════════════════════════
+     PIN OVERLAY (Gate for Reports)
+══════════════════════════════════ -->
+<div id="admin-auth-overlay">
+  <div class="pin-card">
+    <div class="pin-card-hdr">
+      <div class="pin-card-icon">🔒</div>
+      <div class="pin-card-title">වාර්තා ප්‍රවේශය</div>
+      <div class="pin-card-sub">PIN ඇතුළු කරන්න (Enter Secure PIN)</div>
+    </div>
+    <div class="pin-card-body">
+      <div class="pin-disp" id="pin-disp">
+        <div class="pin-dot"></div><div class="pin-dot"></div>
+        <div class="pin-dot"></div><div class="pin-dot"></div>
+      </div>
+      <div class="pin-hint">ඔබේ 4-digit PIN ඇතුළු කරන්න</div>
+      <div class="pin-pad">
+        <button class="pin-key" onclick="pinPress(1)">1</button>
+        <button class="pin-key" onclick="pinPress(2)">2</button>
+        <button class="pin-key" onclick="pinPress(3)">3</button>
+        <button class="pin-key" onclick="pinPress(4)">4</button>
+        <button class="pin-key" onclick="pinPress(5)">5</button>
+        <button class="pin-key" onclick="pinPress(6)">6</button>
+        <button class="pin-key" onclick="pinPress(7)">7</button>
+        <button class="pin-key" onclick="pinPress(8)">8</button>
+        <button class="pin-key" onclick="pinPress(9)">9</button>
+        <button class="pin-key pclr" onclick="pinClear()">C</button>
+        <button class="pin-key" onclick="pinPress(0)">0</button>
+        <button class="pin-key pback" onclick="pinBack()">⌫</button>
+      </div>
+      <div class="pin-err" id="pin-err">වැරදි PIN. නැවත උත්සාහ කරන්න.</div>
+      <button class="pin-login-btn" onclick="pinLogin()">ඇතුළු වන්න</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN 1 – REGISTRATION
+══════════════════════════════════ -->
+<div class="screen active" id="screen-register">
+  <div class="con">
+    <div class="card">
+      <div class="card-hdr">📝 සාමාජික ලියාපදිංචිය</div>
+      <div class="card-body">
+        <div class="fg">
+          <label class="flabel">ව්‍යාපාරයේ නම <span class="req">*</span></label>
+          <input type="text" class="fi" id="reg-name">
+          <div class="emsg" id="err-name">ව්‍යාපාරයේ නම අවශ්‍යයි</div>
+        </div>
+        <div class="fg">
+          <label class="flabel">අයිතිකරුගේ නම <span class="req">*</span></label>
+          <input type="text" class="fi" id="reg-owner">
+          <div class="emsg" id="err-owner">අයිතිකරුගේ නම අවශ්‍යයි</div>
+        </div>
+        <div class="fg">
+          <label class="flabel">ජා.හැ.අ. අංකය <span class="req">*</span></label>
+          <input type="text" class="fi" id="reg-nic" placeholder="951234567V / 199512345678">
+          <div class="fhint">පැරණි හෝ නව ආකෘතිය</div>
+          <div class="emsg" id="err-nic">වලංගු ජා.හැ.අ. අංකයක් ඇතුළත් කරන්න</div>
+        </div>
+        <div class="fg">
+          <label class="flabel">ව්‍යාපාරයේ ලිපිනය <span class="req">*</span></label>
+          <textarea class="fta" id="reg-address"></textarea>
+          <div class="emsg" id="err-address">ලිපිනය අවශ්‍යයි</div>
+        </div>
+        <div class="fg">
+          <label class="flabel">දුරකථන අංකය <span class="req">*</span></label>
+          <input type="tel" class="fi" id="reg-phone" placeholder="0771234567" maxlength="10">
+          <div class="emsg" id="err-phone">10 අගළ ඇතුළත් කරන්න</div>
+        </div>
+        <div class="fg">
+          <label class="flabel">WhatsApp අංකය</label>
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">
+            <input type="checkbox" id="reg-wa-same" onchange="clonePhone()" style="width:20px;height:20px;accent-color:var(--p)">
+            <label for="reg-wa-same" style="font-size:.88rem">දුරකථන අංකයම භාවිතා කරන්න</label>
+          </div>
+          <input type="tel" class="fi" id="reg-whatsapp" placeholder="0771234567" maxlength="10">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bot-bar">
+    <button class="btn btn-s" onclick="resetRegForm()">නැවත සකසන්න</button>
+    <button class="btn btn-p" onclick="submitRegistration()">✔ ලියාපදිංචි කරන්න</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN 2 – CONFIG
+══════════════════════════════════ -->
+<div class="screen" id="screen-config">
+  <div class="con">
+    <div class="card">
+      <div class="card-hdr">⚙️ මිලදී ගැනීමේ රටාව ඉදිරිපත් කරන්න</div>
+      <div class="card-body">
+
+        <!-- ① Business select -->
+        <div class="fg">
+          <label class="flabel">① ඔබේ ව්‍යාපාරය තෝරන්න <span class="req">*</span></label>
+          <div class="biz-search-wrap">
+            <input type="text" class="fi" id="biz-search"
+              placeholder="ව්‍යාපාරයේ නම හෝ NIC ඇතුළත් කරන්න"
+              oninput="bizSearch(this.value)" autocomplete="off">
+            <div id="biz-dd" class="biz-dd"></div>
+          </div>
+          <div id="biz-selected-area" style="display:none;margin-top:6px"></div>
+          <div class="emsg" id="err-biz">ව්‍යාපාරයක් තෝරන්න</div>
+        </div>
+
+        <!-- ② Category -->
+        <div class="fg">
+          <label class="flabel">② භාණ්ඩ තෝරන්න <span class="req">*</span></label>
+          <div class="seg-grp">
+            <button class="seg-btn active" id="cat-vegetables" onclick="setCat('vegetables')">🥦 එළවළු</button>
+            <button class="seg-btn" id="cat-spices" onclick="setCat('spices')">🌶️ කුළු බඩු</button>
+          </div>
+        </div>
+
+        <!-- VEG: prep type -->
+        <div class="fg" id="prep-group">
+          <label class="flabel">එළවලු මිලදී ගැනීමට කැමති විදිය තෝරන්න <span class="req">*</span></label>
+          <div class="prep-cards">
+            <label class="prep-card selected" id="prep-card-cut" onclick="setPrepCard('cut')">
+              <input type="radio" name="prep" value="cut" checked>
+              <div class="prep-card-label">
+                <div class="prep-card-title">සැකසූ (කැපූ) එළවලු</div>
+                <div class="prep-card-sub">Processed / Cut Vegetables</div>
+              </div>
+            </label>
+            <label class="prep-card" id="prep-card-raw" onclick="setPrepCard('raw')">
+              <input type="radio" name="prep" value="raw">
+              <div class="prep-card-label">
+                <div class="prep-card-title">සකස් නොකළ (සාමාන්‍ය) එළවලු</div>
+                <div class="prep-card-sub">Unprocessed / Regular Vegetables</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- VEG: single-day select -->
+        <div class="fg" id="veg-days-group">
+          <label class="flabel">දිනය තෝරන්න <span class="req">*</span><span style="font-size:.74rem;font-weight:400;color:var(--ts);margin-left:6px">(එක් දිනයක් පමණ)</span></label>
+          <div class="day-grid" id="day-grid"></div>
+          <div class="emsg" id="err-days">දිනයක් තෝරන්න</div>
+          <button class="next-btn" id="veg-next-btn" onclick="confirmConfig()">ඊළඟට ›</button>
+        </div>
+
+        <!-- SPICE: day counter -->
+        <div id="spice-days-group" style="display:none">
+          <div class="spice-day-card">
+            <div class="spice-day-title">🌶️ දවස් කීයකට ඔබ කුළු බඩු මිලදී ගන්නේද?</div>
+            <div class="spice-day-sub">For how many days do you buy spices?</div>
+            <div class="spice-stepper">
+              <button class="spice-step-btn" onclick="adjSpiceDays(-1)">−</button>
+              <input type="number" class="spice-step-val" id="spice-day-count" value="1" min="1" max="30" readonly>
+              <button class="spice-step-btn" onclick="adjSpiceDays(1)">+</button>
+            </div>
+          </div>
+          <button class="next-btn" onclick="confirmConfig()">ඊළඟට ›</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- Sticky bottom bar – ආපසු only; ඊළඟට is inline after day/spice selection -->
+  <div class="bot-bar" id="config-bot-bar">
+    <button class="btn btn-s" onclick="navTo('register')">‹ ආපසු</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN 3 – PRODUCTS
+══════════════════════════════════ -->
+<div class="screen" id="screen-products">
+  <div class="con">
+    <div id="product-context-bar" style="background:#e8f5e9;border-radius:var(--rs);padding:10px 13px;margin-bottom:12px;font-size:.84rem;color:var(--pd);font-weight:600"></div>
+    <div id="product-container"></div>
+  </div>
+  <div class="bot-bar">
+    <button class="btn btn-s" style="flex:.8" onclick="showScreen('config')">ආපසු</button>
+    <button class="btn btn-s" style="flex:1.1" onclick="resetProducts()">නැවත සකසන්න</button>
+    <button class="btn btn-p" style="flex:1.2" onclick="savePattern()">
+      ✔ තහවුරු කරන්න <span class="badge" id="pat-badge">0</span>
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN 4 – SUMMARY
+══════════════════════════════════ -->
+<div class="screen" id="screen-summary">
+  <div class="con" id="summary-con"></div>
+  <div class="bot-bar">
+    <button class="btn btn-s" onclick="navTo('config')">ආපසු</button>
+    <button class="btn btn-p" onclick="triggerReportsNav()">🔒 වාර්තා</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN 5 – REPORTS (PIN-gated)
+══════════════════════════════════ -->
+<div class="screen" id="screen-reports">
+  <div class="con">
+
+    <!-- Registered businesses list -->
+    <div class="card">
+      <div class="card-hdr">📋 ලියාපදිංචි ව්‍යාපාර</div>
+      <div id="reports-biz-list" class="card-body compact">
+        <div class="empty"><div class="empty-icon">🏪</div><div>ලියාපදිංචි ව්‍යාපාර නොමැත</div></div>
+      </div>
+    </div>
+
+    <!-- Weekly summary -->
+    <div class="card">
+      <div class="card-hdr">📅 සතිපතා සාරාංශය</div>
+      <div class="card-body compact">
+        <div class="seg-grp" style="margin-bottom:12px">
+          <button class="seg-btn active" id="ws-veg" onclick="switchWeeklyTab('vegetables')">🥦 එළවළු</button>
+          <button class="seg-btn" id="ws-sp" onclick="switchWeeklyTab('spices')">🌶️ කුළු බඩු</button>
+        </div>
+        <div id="weekly-summary-con" style="overflow-x:auto"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Clear all data card at bottom -->
+  <div class="clear-all-card">
+    <button class="clear-all-btn" onclick="clearAll()">
+      🗑️ සියලු දත්ත මකා දමන්න
+    </button>
+  </div>
+
+  <div style="height:90px"></div><!-- spacer -->
+
+  <div class="bot-bar">
+    <button class="btn btn-s" style="flex:.8" onclick="navTo('config')">ආපසු</button>
+    <button class="btn btn-s" style="flex:1.1" onclick="renderReports()">නැවත සකසන්න</button>
+    <button class="btn btn-p" style="flex:1.2" onclick="toast('✅ වාර්තා තහවුරු කරන ලදී')">✔ තහවුරු කරන්න</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: Business detail ══ -->
+<div class="mover" id="modal-detail" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="m-hdr">
+      <div class="m-title" id="modal-title">ව්‍යාපාර විස්තර</div>
+      <button class="m-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="m-body" id="modal-body"></div>
+    <div class="m-foot">
+      <button class="btn btn-s" onclick="closeModal()">වසන්න</button>
+      <button class="btn btn-p" onclick="confirmModalPattern()">✔ තහවුරු කරන්න</button>
+      <button class="btn btn-d" onclick="clearBizPatterns()">🗑 මකා දමන්න</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  MASTER DATA
+// ═══════════════════════════════════════════════════════
+const DAYS=[
+  {id:'sun',si:'ඉරිදා',ta:'ஞாயிறு',en:'Sun'},
+  {id:'mon',si:'සඳුදා',ta:'திங்கள்',en:'Mon'},
+  {id:'tue',si:'අඟහ.',ta:'செவ்வாய்',en:'Tue'},
+  {id:'wed',si:'බදාදා',ta:'புதன்',en:'Wed'},
+  {id:'thu',si:'බ්‍රහස්.',ta:'வியாழன்',en:'Thu'},
+  {id:'fri',si:'සිකු.',ta:'வெள்ளி',en:'Fri'},
+  {id:'sat',si:'මස්න.',ta:'சனி',en:'Sat'}
+];
+
+const CATS={
+  vegetables:[
+    {id:'low',si:'පහත රට එළවළු',ta:'தாழ்நாட்டு காய்கறிகள்',en:'Low-Country Vegetables',products:[
+      {id:'tomato',si:'තක්කාලි',ta:'தக்காளி',en:'Tomato'},
+      {id:'ambarella',si:'ඇඹරැල්ලා',ta:'அம்பிரெல்லா',en:'Ambarella (June Plum)'},
+      {id:'green_peas',si:'බටානා',ta:'பட்டாணி',en:'Green Peas'},
+      {id:'raw_mango',si:'උයන අඹ',ta:'கறி மாங்காய்',en:'Cooking Mango (Raw Mango)'},
+      {id:'winged_bean',si:'දඹල',ta:'சிறகு அவரை',en:'Winged Bean'},
+      {id:'long_beans',si:'මෑකරල්',ta:'பயற்றங்காய்',en:'Long Beans (Yardlong Beans)'},
+      {id:'ash_plantain',si:'අළු කෙසෙල්',ta:'சாம்பல் வாழைப்பழம்',en:'Ash Plantain'},
+      {id:'brinjal',si:'වම්බටු',ta:'கத்தரி',en:'Brinjal (Eggplant)'},
+      {id:'pumpkin',si:'වට්ටක්කා',ta:'பூசணிக்காய்',en:'Pumpkin'},
+      {id:'kekiri',si:'කැකිරි',ta:'மஞ்சள் வெள்ளரிக்காய்',en:'Kekiri (Cooking Cucumber)'},
+      {id:'bitter_gourd',si:'කරවිල',ta:'பாகற்காய்',en:'Bitter Gourd'},
+      {id:'ridge_gourd',si:'වැටකොළු',ta:'பீர்க்கங்காய்',en:'Ridge Gourd'},
+      {id:'snake_gourd',si:'පතෝල',ta:'புடலங்காய்',en:'Snake Gourd'},
+      {id:'knol_khol',si:'බීරළු රාබු',ta:'நூல் கோல்',en:'Knol Khol (Kohlrabi)'},
+      {id:'round_radish',si:'බෝල රාබු',ta:'உருண்டை முள்ளங்கி',en:'Round Radish'},
+      {id:'long_radish',si:'දිග රාබු',ta:'நீள முள்ளங்கி',en:'Long Radish'},
+      {id:'thai_eggplant',si:'තලන බටු',ta:'தலன பட்டு',en:'Thai Eggplant'},
+      {id:'turkey_berry',si:'තිබ්බටු',ta:'சுண்டைக்காய்',en:'Turkey Berry'},
+      {id:'white_eggplant',si:'එල බටු',ta:'வெண் கத்தரிக்காய்',en:'White Eggplant'},
+      {id:'spine_gourd',si:'තුඹ කරවිල',ta:'மெழுகு பாகற்காய்',en:'Spine Gourd'},
+      {id:'ash_gourd',si:'අළු පුහුල්',ta:'சாம்பல் பூசணி',en:'Ash Gourd (Winter Melon)'},
+      {id:'chayote',si:'චවු චවු',ta:'சௌ சௌ',en:'Chayote (Chow Chow)'},
+      {id:'sword_bean',si:'අවර',ta:'தம்பட்டை அவரை',en:'Sword Bean'},
+      {id:'bottle_gourd',si:'දිය ලබූ',ta:'சுரைக்காய்',en:'Bottle Gourd'},
+      {id:'cucumber',si:'පිපිඤ්ඤා',ta:'வெள்ளரிக்காய்',en:'Cucumber'},
+      {id:'drumstick',si:'මුරුංගා',ta:'முருங்கைக்காய்',en:'Drumstick'},
+      {id:'banana_flower',si:'කෙහෙල් මුව',ta:'வாழைப்பூ',en:'Banana Blossom'},
+      {id:'green_chilli',si:'අමු මිරිස්',ta:'பச்சை மிளகாய்',en:'Green Chilli'},
+      {id:'birds_eye',si:'කොච්චි මිරිස්',ta:'காந்தாரி மிளகாய்',en:"Bird's Eye Chilli"},
+      {id:'cobra_chilli',si:'නයි මිරිස්',ta:'கோஸ்ட் பெப்பர்',en:'Cobra Chilli / Ghost Pepper'}
+    ]},
+    {id:'up',si:'උඩරට එළවළු',ta:'மலைநாட்டு காய்கறிகள்',en:'Up-Country Vegetables',products:[
+      {id:'red_cabbage',si:'රතු ගෝවා',ta:'சிகப்பு முட்டைக்கோஸ்',en:'Red Cabbage'},
+      {id:'cabbage',si:'ගෙඩි ගෝවා',ta:'முட்டைக்கோஸ்',en:'Cabbage'},
+      {id:'leeks',si:'ලීක්ස්',ta:'லீக்ஸ்',en:'Leeks'},
+      {id:'japanese_leeks',si:'ජපන් ලීක්ස්',ta:'ஜப்பானிய லீக்ஸ்',en:'Japanese Leeks (Negi)'},
+      {id:'carrot',si:'කැරට්',ta:'கேரட்',en:'Carrot'},
+      {id:'beetroot',si:'රතු අල',ta:'பீட்ரூட்',en:'Beetroot'},
+      {id:'beans',si:'බෝංචි',ta:'பீன்ஸ்',en:'Beans'},
+      {id:'butter_beans',si:'බටර් බෝංචි',ta:'பட்டர் பீன்ஸ்',en:'Butter Beans'},
+      {id:'nokol',si:'නෝකෝල්',ta:'நூல் கோல்',en:'Knol Khol (Kohlrabi)'},
+      {id:'cauliflower',si:'මල් ගෝවා',ta:'காலிஃபிளவர்',en:'Cauliflower'},
+      {id:'salad_cucumber',si:'සලාද පිපිඤ්ඤා',ta:'சலாது வெள்ளரிக்காய்',en:'Salad Cucumber'},
+      {id:'baby_carrot',si:'බේබි කැරට්',ta:'பேபி கேரட்',en:'Baby Carrot'},
+      {id:'cherry_tomato',si:'චෙරි තක්කාලි',ta:'செர்ரி தக்காளி',en:'Cherry Tomato'},
+      {id:'chinese_cabbage',si:'චීන ගෝවා',ta:'சீன முட்டைக்கோஸ்',en:'Chinese Cabbage (Napa Cabbage)'},
+      {id:'pak_choy',si:'පැක් චෝයි',ta:'பாக் சோய்',en:'Pak Choy (Bok Choy)'},
+      {id:'green_bell',si:'කොළ බෙල් පෙපර්',ta:'பச்சை குடைமிளகாய்',en:'Green Bell Pepper'},
+      {id:'red_bell',si:'රතු බෙල් පෙපර්',ta:'சிகப்பு குடைமிளகாய்',en:'Red Bell Pepper'},
+      {id:'yellow_bell',si:'කහ බෙල් පෙපර්',ta:'மஞ்சள் குடைமிளகாய்',en:'Yellow Bell Pepper'},
+      {id:'yellow_zucchini',si:'කහ සූකිනි',ta:'மஞ்சள் சுக்கினி',en:'Yellow Zucchini'},
+      {id:'green_zucchini',si:'කොළ සූකිනි',ta:'பச்சை சுக்கினி',en:'Green Zucchini'}
+    ]},
+    {id:'tubers',si:'අල භෝග',ta:'கிழங்கு வகைகள்',en:'Tuber Crops',products:[
+      {id:'potato',si:'අර්තාපල් (අල)',ta:'உருளைக்கிழங்கு',en:'Potato'},
+      {id:'cassava',si:'මඤ්ඤොක්කා',ta:'மரவள்ளிக்கிழங்கு',en:'Cassava (Tapioca / Manioc)'},
+      {id:'sweet_potato',si:'බතල',ta:'சர்க்கரைவள்ளிப் கிழங்கு',en:'Sweet Potato'},
+      {id:'kohila',si:'කොහිල අල',ta:'கொஹில கிழங்கு',en:'Kohila Root (Lasia Root)'},
+      {id:'kiri_ala',si:'කිරි අල',ta:'சேப்பங்கிழங்கு',en:'Taro Root (Taro Yam)'},
+      {id:'innala',si:'ඉන්නල',ta:'சிறு கிழங்கு',en:'Innala (Lesser Yam)'},
+      {id:'lotus_root',si:'නෙළුම් අල',ta:'தாமரைக்கிழங்கு',en:'Lotus Root'},
+      {id:'arrowroot',si:'හුලංකීරිය',ta:'கூவங்கிழங்கு',en:'Arrowroot'},
+      {id:'canna_yam',si:'බුත්සරණ',ta:'புத்சரண கிழங்கு',en:'Canna Yam'}
+    ]},
+    {id:'special',si:'වෙනත් විශේෂ එළවලු',ta:'இதர அத்தியாவசிய காய்கறிகள்',en:'Other Special Vegetables',products:[
+      {id:'garlic',si:'සුදු ලූණු',ta:'பூண்டு',en:'Garlic'},
+      {id:'big_onion',si:'ලොකු ලූණු',ta:'பெரிய வெங்காயம்',en:'Big Onion (B-Onion)'},
+      {id:'red_onion',si:'රතු ලූණු',ta:'சிவப்பு வெங்காயம்',en:'Red Onion (Shallots)'},
+      {id:'chinese_ginger',si:'චීන ඉඟුරු',ta:'சீன இஞ்சி',en:'Chinese Ginger'},
+      {id:'local_ginger',si:'දේශීය ඉඟුරු',ta:'உள்ளூர் இஞ்சி',en:'Local Ginger'},
+      {id:'breadfruit',si:'දෙල්',ta:'ஈரப்பலா',en:'Breadfruit'},
+      {id:'sweetcorn',si:'බඩඉරිඟු',ta:'சோளம்',en:'Sweetcorn / Maize'},
+      {id:'baby_jack',si:'පොලොස්',ta:'பச்சை பலாக்காய்',en:'Baby Jackfruit (Young Jackfruit)'},
+      {id:'jackfruit',si:'කොස්',ta:'பலாக்காய்',en:'Jackfruit'},
+      {id:'lime',si:'දෙහි',ta:'எலுமிச்சை',en:'Lime',integer:true,unit:'pcs'},
+      {id:'raw_peanuts',si:'උයන රට කජු',ta:'பச்சை வேர்க்கடலை',en:'Raw Peanuts / Groundnuts'},
+      {id:'coconut',si:'පොල්',ta:'தேங்காய்',en:'Coconut',integer:true,unit:'pcs'},
+      {id:'grated_coconut',si:'ගාන ලද පොල්',ta:'துருவிய தேங்காய்',en:'Grated Coconut',integer:true,unit:'pcs'}
+    ]},
+    {id:'leafy',si:'කොළ එළවලු',ta:'இலை காய்கறிகள்',en:'Leafy Vegetables',products:[
+      {id:'spring_onion',si:'ලූණු කොළ',ta:'வெங்காயத்தாள்',en:'Spring Onion (Green Onion)'},
+      {id:'green_cabbage_l',si:'කොළ ගෝවා',ta:'பச்சை முட்டைக்கோஸ்',en:'Green Cabbage'},
+      {id:'spinach',si:'නිවිති',ta:'பசலைக்கீரை',en:'Spinach (Malabar Spinach)'},
+      {id:'green_lettuce',si:'කොළ සලාද',ta:'பச்சை லெட்டூஸ்',en:'Green Lettuce'},
+      {id:'red_lettuce',si:'රතු සලාද',ta:'சிகப்பு லெட்டூஸ்',en:'Red Lettuce'},
+      {id:'iceberg',si:'අයිස්බර්ග් සලාද',ta:'ஐஸ்பர்க் லெட்டூஸ்',en:'Iceberg Lettuce'},
+      {id:'rhubarb',si:'රුබාබ්',ta:'ரூபார்ப்',en:'Rhubarb'},
+      {id:'kang_kung',si:'කන් කුන්',ta:'கங்குன் (நீர் பசலை)',en:'Kang Kung (Water Spinach)'}
+    ]},
+    {id:'greens',si:'පලා සහ කීර',ta:'கீரை வகைகள்',en:'Greens (Pala & Kira)',products:[
+      {id:'gotukola',si:'ගොටුකොළ',ta:'வல்லாரைக்கீரை',en:'Gotukola (Centella)'},
+      {id:'mukunuwenna',si:'මුකුණුවැන්න',ta:'பொன்னாங்கண்ணிக்கீரை',en:'Mukunuwenna'},
+      {id:'thampala',si:'තම්පලා',ta:'முளைக்கீரை',en:'Thampala (Amaranth Leaves)'},
+      {id:'anguna',si:'අඟුණ කොළ',ta:'அங்குண இலை',en:'Anguna Leaves'},
+      {id:'moringa_leaves',si:'මුරුංගා කොළ',ta:'முருங்கைக்கீரை',en:'Drumstick Leaves (Moringa Leaves)'},
+      {id:'kathurumurunga',si:'කතුරුමුරුංගා',ta:'அகத்திகீரை',en:'Kathurumurunga'},
+      {id:'sarana',si:'සාරන',ta:'சாரணைக் கீரை',en:'Sarana (Horse Purslane)'},
+      {id:'mixed_greens',si:'මිශ්‍ර පලා වර්ග',ta:'கலவை கீரை வகைகள்',en:'Mixed Greens'}
+    ]},
+    {id:'herbs',si:'කුළුබඩු කොළ',ta:'நறுமண மூலிகைகள்',en:'Herbs',products:[
+      {id:'celery',si:'සෙලරි',ta:'செலரி',en:'Celery'},
+      {id:'mustard_greens',si:'අබ කොළ',ta:'கடுகு கீரை',en:'Mustard Greens'},
+      {id:'curry_leaves',si:'කරපිංචා',ta:'கறிவேப்பிலை',en:'Curry Leaves'},
+      {id:'rampe',si:'රම්පෙ',ta:'ரம்பை இலை (பாண்டன்)',en:'Rampe (Pandan Leaves)'},
+      {id:'dill',si:'ඩිල් කොළ',ta:'சதகுப்பை இலை',en:'Dill Leaves'},
+      {id:'fennel',si:'මහදුරු කොළ',ta:'பெருஞ்சீரக இலை',en:'Fennel Leaves / Fennel'},
+      {id:'coriander',si:'කොත්තමල්ලි කොළ',ta:'கொத்தமல்லி தழை',en:'Coriander Leaves (Cilantro)'},
+      {id:'rosemary',si:'රෝස්මරී',ta:'ரோஸ்மேரி',en:'Rosemary'},
+      {id:'thyme',si:'තයිම්',ta:'தைம்',en:'Thyme'},
+      {id:'oregano',si:'ඔරිගානෝ සහ මාජොරම්',ta:'ஓரிகானோ மற்றும் மார்ஜோரம்',en:'Oregano and Marjoram'}
+    ]}
+  ],
+  spices:[
+    {id:'spices_main',si:'කුළු බඩු',ta:'மசாலாப் பொருட்கள்',en:'Spices',products:[
+      {id:'cinnamon_pieces',si:'කුරුඳු කෑලි',ta:'கருவாத் துண்டுகள்',en:'Cinnamon Pieces'},
+      {id:'cinnamon_rolls',si:'කුරුඳු රෝල්',ta:'சுருள் கருவா',en:'Cinnamon Rolls (Cinnamon Quills)'},
+      {id:'cinnamon_powder',si:'කුඩු කළ / කැබලි කළ කුරුඳු',ta:'துருவிய கருவாத் துண்டுகள்',en:'Powdered / Crushed Cinnamon'},
+      {id:'goraka',si:'ගොරකා',ta:'குடம்புளி',en:'Garcinia (Malabar Tamarind)'},
+      {id:'goraka_paste',si:'ගොරකා පේස්ට්',ta:'கொறக்கா பேஸ்ட்',en:'Garcinia Paste'},
+      {id:'tamarind',si:'සියඹලා',ta:'புளி',en:'Tamarind'},
+      {id:'tamarind_paste',si:'සියඹලා පේස්ට්',ta:'புளி பேஸ்ட்',en:'Tamarind Paste'},
+      {id:'pepper_seeds',si:'ගම්මිරිස් ඇට / කැබලි',ta:'முழு மிளகு / மிளகுத் துகள்',en:'Black Pepper Seeds / Crushed Pepper'},
+      {id:'pepper_powder',si:'ගම්මිරිස් කුඩු',ta:'மிளகுத் தூள்',en:'Black Pepper Powder'},
+      {id:'cardamom',si:'කරදමුංගු',ta:'ஏலக்காய்',en:'Cardamom'}
+    ]}
+  ]
+};
+
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+let lang='si';
+let regs=[], patterns=[];
+let curBiz=null;
+let cfg={cat:'vegetables',prep:'cut',days:[],spice_days:1};
+let items={};
+let pinBuf='';
+let weeklyTab='vegetables';
+let reportsUnlocked=false;
+let activeBizModal=null;   // NIC of currently open biz modal
+const ADMIN_PIN='1234';
+
+// ═══════════════════════════════════════════════════════
+//  PERSISTENCE
+// ═══════════════════════════════════════════════════════
+function loadData(){
+  try{regs=JSON.parse(localStorage.getItem('syn3_regs')||'[]')}catch(e){regs=[]}
+  try{patterns=JSON.parse(localStorage.getItem('syn3_pats')||'[]')}catch(e){patterns=[]}
+}
+function saveData(){
+  localStorage.setItem('syn3_regs',JSON.stringify(regs));
+  localStorage.setItem('syn3_pats',JSON.stringify(patterns));
+}
+
+// ═══════════════════════════════════════════════════════
+//  LANGUAGE
+// ═══════════════════════════════════════════════════════
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    b.classList.toggle('active',(l==='si'&&b.textContent.includes('සිංහල'))||(l==='ta'&&b.textContent.includes('தமிழ்')));
+  });
+  document.documentElement.lang=l;
+  renderDayGrid();
+  if(document.getElementById('screen-products').classList.contains('active'))renderProducts();
+  if(document.getElementById('screen-reports').classList.contains('active'))renderReports();
+}
+function t(obj){return obj[lang]||obj.en||''}
+
+// ═══════════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function navTo(tab){
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.toggle('active',b.dataset.screen===tab));
+  if(tab==='register')showScreen('register');
+  else if(tab==='config'){renderDayGrid();updateConfigBizUI();showScreen('config');}
+  else if(tab==='reports'){renderReports();showScreen('reports');}
+}
+// Reports tab always triggers PIN gate unless already unlocked
+function triggerReportsNav(){
+  if(reportsUnlocked){
+    navTo('reports');
+  } else {
+    pinBuf='';updatePinDots();
+    document.getElementById('pin-err').classList.remove('show');
+    document.getElementById('admin-auth-overlay').classList.add('open');
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  PIN GATE
+// ═══════════════════════════════════════════════════════
+function pinPress(n){
+  if(pinBuf.length<4){pinBuf+=String(n);updatePinDots();}
+}
+function pinBack(){pinBuf=pinBuf.slice(0,-1);updatePinDots();}
+function pinClear(){pinBuf='';updatePinDots();}
+function updatePinDots(){
+  document.querySelectorAll('.pin-dot').forEach((d,i)=>d.classList.toggle('filled',i<pinBuf.length));
+  document.getElementById('pin-err').classList.remove('show');
+}
+function pinLogin(){
+  if(pinBuf===ADMIN_PIN){
+    reportsUnlocked=true;
+    document.getElementById('admin-auth-overlay').classList.remove('open');
+    navTo('reports');
+  } else {
+    document.getElementById('pin-err').classList.add('show');
+    document.querySelectorAll('.pin-dot').forEach(d=>{
+      d.classList.add('error');setTimeout(()=>d.classList.remove('error'),500);
+    });
+    pinBuf='';setTimeout(updatePinDots,620);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  REGISTRATION
+// ═══════════════════════════════════════════════════════
+function clonePhone(){
+  const wa=document.getElementById('reg-whatsapp');
+  wa.value=document.getElementById('reg-wa-same').checked?document.getElementById('reg-phone').value:'';
+  wa.disabled=document.getElementById('reg-wa-same').checked;
+}
+function valNIC(n){return /^[0-9]{9}[VXvx]$/.test(n)||/^[0-9]{12}$/.test(n)}
+function resetRegForm(){
+  ['reg-name','reg-owner','reg-nic','reg-address','reg-phone','reg-whatsapp'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
+  document.querySelectorAll('.fi.err,.fta.err').forEach(e=>e.classList.remove('err'));
+  document.querySelectorAll('.emsg.show').forEach(e=>e.classList.remove('show'));
+}
+function submitRegistration(){
+  const name=gv('reg-name'),owner=gv('reg-owner'),nic=gv('reg-nic'),
+        addr=gv('reg-address'),phone=gv('reg-phone'),wa=gv('reg-whatsapp');
+  document.querySelectorAll('.fi.err,.fta.err').forEach(e=>e.classList.remove('err'));
+  document.querySelectorAll('.emsg.show').forEach(e=>e.classList.remove('show'));
+  let ok=true;
+  if(!name){mark('reg-name','err-name');ok=false}
+  if(!owner){mark('reg-owner','err-owner');ok=false}
+  if(!valNIC(nic)){mark('reg-nic','err-nic');ok=false}
+  if(!addr){mark('reg-address','err-address');ok=false}
+  if(!/^\d{10}$/.test(phone)){mark('reg-phone','err-phone');ok=false}
+  if(!ok)return;
+  const reg={_id:'nic_'+nic.toLowerCase().replace(/[^a-z0-9]/g,''),
+    business_name:name,owner_name:owner,nic_number:nic.toUpperCase(),
+    address:addr,phone,whatsapp:wa||phone,registered_at:new Date().toISOString()};
+  const idx=regs.findIndex(r=>r.nic_number.toUpperCase()===nic.toUpperCase());
+  if(idx>=0)regs[idx]=reg;else regs.push(reg);
+  saveData();curBiz=reg;
+  toast('✅ ලියාපදිංචිය සාර්ථකයි!');
+  cfg={cat:'vegetables',prep:'cut',days:[],spice_days:1};
+  renderDayGrid();updateConfigBizUI();
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.toggle('active',b.dataset.screen==='config'));
+  showScreen('config');
+}
+function gv(id){return document.getElementById(id)?.value.trim()||''}
+function mark(inputId,msgId){
+  document.getElementById(inputId)?.classList.add('err');
+  document.getElementById(msgId)?.classList.add('show');
+}
+
+// ═══════════════════════════════════════════════════════
+//  CONFIG – BUSINESS SEARCH
+// ═══════════════════════════════════════════════════════
+function updateConfigBizUI(){
+  const area=document.getElementById('biz-selected-area');
+  const inp=document.getElementById('biz-search');
+  if(curBiz){
+    inp.value=curBiz.business_name;
+    area.style.display='block';
+    area.innerHTML=`<div class="info-chip">✅ ${curBiz.business_name}
+      <span style="font-size:.74rem;color:var(--ts);font-weight:400">NIC: ${curBiz.nic_number} | ${curBiz.phone}</span>
+      <button class="biz-clear" onclick="clearBizSel()" title="ඉවත් කරන්න">✕</button>
+    </div>`;
+  } else {
+    inp.value='';area.style.display='none';area.innerHTML='';
+  }
+}
+function clearBizSel(){curBiz=null;updateConfigBizUI();}
+let bzT=null;
+function bizSearch(q){
+  clearTimeout(bzT);
+  bzT=setTimeout(()=>{
+    const dd=document.getElementById('biz-dd');
+    const qr=q.toLowerCase().trim();
+    if(!qr){dd.classList.remove('open');return}
+    const res=regs.filter(r=>r.business_name.toLowerCase().includes(qr)||r.nic_number.toLowerCase().includes(qr)).slice(0,8);
+    dd.innerHTML=res.length
+      ?res.map(r=>`<div class="biz-dd-item" onclick="selectBiz('${r._id}')"><div class="bdi-name">🏪 ${r.business_name}</div><div class="bdi-sub">NIC: ${r.nic_number} | ${r.phone}</div></div>`).join('')
+      :'<div class="biz-dd-item"><div class="bdi-name" style="color:var(--ts)">ව්‍යාපාර නොමැත</div></div>';
+    dd.classList.add('open');
+  },200);
+}
+function selectBiz(id){
+  curBiz=regs.find(r=>r._id===id);
+  document.getElementById('biz-dd').classList.remove('open');
+  updateConfigBizUI();
+}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#biz-search')&&!e.target.closest('#biz-dd')){
+    const dd=document.getElementById('biz-dd');if(dd)dd.classList.remove('open');
+  }
+});
+
+// ═══════════════════════════════════════════════════════
+//  CONFIG – CATEGORY / PREP / DAYS
+// ═══════════════════════════════════════════════════════
+function setCat(cat){
+  cfg.cat=cat;cfg.days=[];
+  document.getElementById('cat-vegetables').classList.toggle('active',cat==='vegetables');
+  document.getElementById('cat-spices').classList.toggle('active',cat==='spices');
+  document.getElementById('prep-group').style.display=cat==='vegetables'?'block':'none';
+  document.getElementById('veg-days-group').style.display=cat==='vegetables'?'block':'none';
+  document.getElementById('spice-days-group').style.display=cat==='spices'?'block':'none';
+  renderDayGrid();
+}
+function setPrepCard(prep){
+  cfg.prep=prep;
+  document.getElementById('prep-card-cut').classList.toggle('selected',prep==='cut');
+  document.getElementById('prep-card-raw').classList.toggle('selected',prep==='raw');
+  document.querySelector('#prep-card-cut input').checked=prep==='cut';
+  document.querySelector('#prep-card-raw input').checked=prep==='raw';
+}
+function renderDayGrid(){
+  document.getElementById('day-grid').innerHTML=DAYS.map(d=>{
+    const sel=cfg.days.includes(d.id);
+    return`<div class="day-chip${sel?' sel':''}" onclick="selectDay('${d.id}')"><div>${t(d)}</div><div class="den">${d.en}</div></div>`;
+  }).join('');
+  refreshNextBtn();
+}
+// Single-select: only one day at a time
+function selectDay(id){
+  cfg.days=[id];
+  renderDayGrid();
+  document.getElementById('err-days').classList.remove('show');
+}
+function refreshNextBtn(){
+  const btn=document.getElementById('veg-next-btn');
+  if(!btn)return;
+  const ready=cfg.days.length>0;
+  btn.classList.toggle('waiting',!ready);
+  btn.textContent=ready?'ඊළඟට ›':'දිනයක් තෝරා ඊළඟට යන්න ›';
+}
+function adjSpiceDays(d){
+  const inp=document.getElementById('spice-day-count');
+  let val=parseInt(inp.value)||1;val=Math.max(1,val+d);inp.value=val;cfg.spice_days=val;
+}
+function resetConfig(){
+  cfg={cat:'vegetables',prep:'cut',days:[],spice_days:1};
+  curBiz=null;
+  updateConfigBizUI();
+  setPrepCard('cut');
+  setCat('vegetables');
+  document.getElementById('spice-day-count').value=1;
+  document.getElementById('err-days').classList.remove('show');
+  document.getElementById('err-biz').classList.remove('show');
+  toast('නැවත සකසන ලදී');
+}
+function confirmConfig(){
+  if(!curBiz){document.getElementById('err-biz').classList.add('show');return}
+  document.getElementById('err-biz').classList.remove('show');
+  if(cfg.cat==='vegetables'){
+    if(cfg.days.length===0){document.getElementById('err-days').classList.add('show');return}
+    document.getElementById('err-days').classList.remove('show');
+  } else {
+    cfg.spice_days=parseInt(document.getElementById('spice-day-count').value)||1;
+  }
+  items={};renderProducts();showScreen('products');
+}
+
+// ═══════════════════════════════════════════════════════
+//  PRODUCTS
+// ═══════════════════════════════════════════════════════
+function renderProducts(){
+  const isSp=cfg.cat==='spices';
+  const cats=CATS[cfg.cat];
+  const ctx=document.getElementById('product-context-bar');
+  if(isSp){
+    ctx.innerHTML=`<span style="color:var(--accent)">🌶️ කුළු බඩු</span> | 📅 <strong>${cfg.spice_days} දින</strong> | 🏪 ${curBiz.business_name}`;
+  } else {
+    const dayName=cfg.days.length>0?(DAYS.find(d=>d.id===cfg.days[0])?.[lang]||cfg.days[0]):'—';
+    const prep=cfg.prep==='cut'?'සැකසූ (කැපූ)':'සකස් නොකළ (සාමාන්‍ය)';
+    ctx.innerHTML=`🥦 <strong>${prep}</strong> | 📅 <strong>${dayName}</strong> | 🏪 ${curBiz.business_name}`;
+  }
+  let html='';
+  cats.forEach((cat,idx)=>{
+    html+=`<div class="pcat${idx>0?' collapsed':''}" id="pcat-${cat.id}">
+      <div class="cat-hdr" onclick="toggleCat('${cat.id}')">
+        <div><div style="font-weight:700">${t(cat)}</div><div class="cen">${cat.en}</div></div>
+        <div class="cat-chev">▼</div>
+      </div>
+      <div class="cat-body">`;
+    cat.products.forEach(prod=>{
+      const v=items[prod.id]||{qty:0,unit:prod.unit||'kg'};
+      const isInt=prod.integer||false;
+      const hasQty=v.qty>0;
+      const namePrimary=lang==='si'?prod.si:prod.ta;
+      const nameSub=lang==='si'?'':`<div class="pname-sub">${prod.en}</div>`;
+      html+=`<div class="prow${hasQty?' has-qty':''}" id="prow-${prod.id}">
+        <div style="flex:1;min-width:0">
+          <div class="pname">${namePrimary}</div>${nameSub}
+          ${hasQty?`<div class="pqty-badge">✓ ${v.qty} ${v.unit}</div>`:''}
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
+          <div class="unit-tog">
+            <button class="unit-btn${v.unit==='kg'?(isSp?' sp-active':' active'):''}" onclick="setUnit('${prod.id}','kg')">kg</button>
+            <button class="unit-btn${v.unit==='g'?(isSp?' sp-active':' active'):''}" onclick="setUnit('${prod.id}','g')">g</button>
+          </div>
+          <div class="stepper">
+            <button class="stp-btn" style="${isSp?'background:var(--accent)':''}" onclick="stepQty('${prod.id}',-1,${isInt})">−</button>
+            <input type="number" class="stp-val" id="sv-${prod.id}" value="${v.qty>0?v.qty:''}"
+              onchange="setQty('${prod.id}',this.value,${isInt})"
+              placeholder="0" step="${isInt?'1':'0.5'}" min="0">
+            <button class="stp-btn" style="${isSp?'background:var(--accent)':''}" onclick="stepQty('${prod.id}',1,${isInt})">+</button>
+          </div>
+        </div>
+      </div>`;
+    });
+    html+='</div></div>';
+  });
+  document.getElementById('product-container').innerHTML=html;
+  updateBadge();
+}
+function toggleCat(id){document.getElementById('pcat-'+id).classList.toggle('collapsed')}
+function setUnit(pid,u){
+  if(!items[pid])items[pid]={qty:0,unit:u};else items[pid].unit=u;
+  refreshRow(pid);updateBadge();
+}
+function setQty(pid,val,isInt){
+  const n=parseFloat(val);
+  if(isNaN(n)||n<=0){delete items[pid]}
+  else{const fin=isInt?Math.floor(n):Math.round(n*10)/10;if(!items[pid])items[pid]={qty:0,unit:'kg'};items[pid].qty=fin;}
+  refreshRow(pid);updateBadge();
+}
+function stepQty(pid,delta,isInt){
+  const curr=items[pid]?.qty||0;
+  const step=isInt?1:0.5;
+  const next=Math.max(0,curr+delta*step);
+  setQty(pid,next,isInt);
+  const inp=document.getElementById('sv-'+pid);
+  if(inp)inp.value=next>0?next:'';
+}
+function refreshRow(pid){
+  const row=document.getElementById('prow-'+pid);if(!row)return;
+  const hasQty=items[pid]&&items[pid].qty>0;
+  row.classList.toggle('has-qty',hasQty);
+  let badge=row.querySelector('.pqty-badge');if(badge)badge.remove();
+  if(hasQty){
+    const v=items[pid];
+    const d=document.createElement('div');d.className='pqty-badge';d.textContent=`✓ ${v.qty} ${v.unit}`;
+    row.querySelector('.pname').parentNode.appendChild(d);
+  }
+}
+function updateBadge(){
+  document.getElementById('pat-badge').textContent=Object.values(items).filter(v=>v.qty>0).length;
+}
+function resetProducts(){items={};renderProducts();toast('නැවත සකසන ලදී');}
+
+// ═══════════════════════════════════════════════════════
+//  SAVE PATTERN
+// ═══════════════════════════════════════════════════════
+function savePattern(){
+  const filled=Object.entries(items).filter(([_,v])=>v.qty>0).map(([id,v])=>{
+    const prod=findProd(id);
+    return{item_id:id,display_name_si:prod.si,display_name_ta:prod.ta,display_name_en:prod.en||'',quantity:v.qty,unit:v.unit||'kg'};
+  });
+  if(filled.length===0){toast('අවම වශයෙන් එක් භාණ්ඩයක් ඇතුළත් කරන්න','e');return}
+  const isSp=cfg.cat==='spices';
+  const pat={
+    _id:'pat_'+Date.now().toString(36),
+    nic_number:curBiz.nic_number,
+    business_name:curBiz.business_name,
+    category:cfg.cat,
+    is_processed:cfg.prep==='cut',
+    schedule_days:isSp?[]:([...cfg.days]),
+    spice_days:isSp?cfg.spice_days:null,
+    items:filled,
+    updated_at:new Date().toISOString()
+  };
+  patterns.push(pat);saveData();
+  toast('✅ රටාව සුරකින ලදී!');
+  renderSummary(pat._id);showScreen('summary');
+}
+function findProd(id){
+  for(const grp of Object.values(CATS)){for(const c of grp){const p=c.products.find(x=>x.id===id);if(p)return p}}
+  return{si:id,ta:id,en:id};
+}
+
+// ═══════════════════════════════════════════════════════
+//  SUMMARY (after saving)
+// ═══════════════════════════════════════════════════════
+function renderSummary(patId){
+  const pat=patterns.find(p=>p._id===patId);
+  if(!pat){document.getElementById('summary-con').innerHTML='<div class="empty"><div class="empty-icon">❌</div><div>රටාව හමු නොවිණ</div></div>';return}
+  const isSp=pat.category==='spices';
+  const dayName=isSp?`${pat.spice_days} දින`:(pat.schedule_days.map(d=>DAYS.find(x=>x.id===d)?.[lang]||d).join(', '));
+  const prep=isSp?'':pat.is_processed?'සැකසූ (කැපූ)':'සකස් නොකළ (සාමාන්‍ය)';
+  let html=`<div class="card">
+    <div class="card-hdr">✅ ${pat.business_name}</div>
+    <div class="card-body compact">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:.86rem;margin-bottom:12px">
+        <div><strong>NIC:</strong> ${pat.nic_number}</div>
+        <div><strong>වර්ගය:</strong> ${isSp?'කුළු බඩු':'එළවළු'}</div>
+        <div><strong>${isSp?'දින ගණන':'දිනය'}:</strong> ${dayName}</div>
+        ${prep?`<div><strong>ආකාරය:</strong> ${prep}</div>`:''}
+      </div>
+      <table class="stbl">
+        <thead><tr><th>#</th><th>භාණ්ඩය</th><th style="text-align:right">ප්‍රමාණය</th></tr></thead>
+        <tbody>${pat.items.map((it,i)=>`<tr>
+          <td>${i+1}</td>
+          <td><div style="font-weight:600">${lang==='si'?it.display_name_si:it.display_name_ta}</div>${lang==='ta'?`<div style="font-size:.72rem;color:var(--ts)">${it.display_name_en}</div>`:''}</td>
+          <td class="qty">${it.quantity} ${it.unit}</td>
+        </tr>`).join('')}</tbody>
+      </table>
+    </div>
+  </div>`;
+  document.getElementById('summary-con').innerHTML=html;
+}
+
+// ═══════════════════════════════════════════════════════
+//  REPORTS
+// ═══════════════════════════════════════════════════════
+function renderReports(){
+  renderReportsBizList();
+  renderWeeklySummary(weeklyTab);
+}
+
+function renderReportsBizList(){
+  const el=document.getElementById('reports-biz-list');
+  if(regs.length===0){
+    el.innerHTML='<div class="empty"><div class="empty-icon">🏪</div><div>ලියාපදිංචි ව්‍යාපාර නොමැත</div></div>';return;
+  }
+  el.innerHTML=regs.map(b=>{
+    const pc=patterns.filter(p=>p.nic_number===b.nic_number).length;
+    return`<div class="biz-card" onclick="openBizModal('${b._id}')">
+      <div>
+        <div class="biz-name">🏢 ${b.business_name}</div>
+        <div class="biz-meta">${b.nic_number} | ${b.phone} | රටාවන්: ${pc}</div>
+      </div>
+      <div style="font-size:1.3rem;color:var(--ts)">›</div>
+    </div>`;
+  }).join('');
+}
+
+function switchWeeklyTab(cat){
+  weeklyTab=cat;
+  document.getElementById('ws-veg').classList.toggle('active',cat==='vegetables');
+  document.getElementById('ws-sp').classList.toggle('active',cat==='spices');
+  renderWeeklySummary(cat);
+}
+
+function renderWeeklySummary(cat){
+  const el=document.getElementById('weekly-summary-con');
+  const pats=patterns.filter(p=>p.category===cat);
+  if(pats.length===0){el.innerHTML='<div class="empty" style="padding:18px"><div>රටාවන් නොමැත</div></div>';return}
+  if(cat==='spices'){renderSpiceWeekly(pats,el);return}
+  // Vegetable: business × item × day matrix
+  let html=`<table class="rtbl">
+    <thead><tr>
+      <th style="min-width:100px">ව්‍යාපාරය</th>
+      <th>භාණ්ඩය</th>
+      ${DAYS.map(d=>`<th style="text-align:center">${d[lang]}<br><small style="font-weight:400;opacity:.8">(${d.en})</small></th>`).join('')}
+    </tr></thead><tbody>`;
+  regs.forEach(biz=>{
+    const bizPats=pats.filter(p=>p.nic_number===biz.nic_number);
+    if(!bizPats.length)return;
+    const bizItems={};
+    bizPats.forEach(pat=>{
+      pat.schedule_days.forEach(d=>{
+        pat.items.forEach(it=>{
+          if(!bizItems[it.item_id])bizItems[it.item_id]={si:it.display_name_si,days:{},unit:it.unit};
+          bizItems[it.item_id].days[d]=(bizItems[it.item_id].days[d]||0)+it.quantity;
+        });
+      });
+    });
+    const ids=Object.keys(bizItems);
+    ids.forEach((itId,i)=>{
+      html+=`<tr>
+        ${i===0?`<td class="biz-row-label" rowspan="${ids.length}">${biz.business_name}</td>`:''}
+        <td>${bizItems[itId].si}</td>
+        ${DAYS.map(d=>{const q=bizItems[itId].days[d.id];return q?`<td class="dc">${q}</td>`:`<td class="de">—</td>`}).join('')}
+      </tr>`;
+    });
+  });
+  html+='</tbody></table>';
+  el.innerHTML=html;
+}
+
+function renderSpiceWeekly(pats,el){
+  let html=`<table class="rtbl"><thead><tr>
+    <th style="min-width:100px">ව්‍යාපාරය</th><th>භාණ්ඩය</th><th style="text-align:center">දින ගණන</th><th style="text-align:right">ප්‍රමාණය</th>
+  </tr></thead><tbody>`;
+  regs.forEach(biz=>{
+    const bizPats=pats.filter(p=>p.nic_number===biz.nic_number);if(!bizPats.length)return;
+    let first=true;
+    const totalRows=bizPats.reduce((s,p)=>s+p.items.length,0);
+    bizPats.forEach(pat=>{
+      pat.items.forEach((it,i)=>{
+        html+=`<tr>
+          ${(first&&i===0)?`<td class="biz-row-label" rowspan="${totalRows}">${biz.business_name}</td>`:''}
+          <td>${it.display_name_si}</td>
+          <td class="dc">${pat.spice_days||1}</td>
+          <td style="text-align:right;font-weight:700;color:var(--p)">${it.quantity} ${it.unit}</td>
+        </tr>`;
+        first=false;
+      });
+    });
+  });
+  html+='</tbody></table>';
+  el.innerHTML=html;
+}
+
+// ═══════════════════════════════════════════════════════
+//  BUSINESS MODAL – filtered to one business only
+// ═══════════════════════════════════════════════════════
+function openBizModal(bizId){
+  const biz=regs.find(r=>r._id===bizId);if(!biz)return;
+  activeBizModal=biz.nic_number;
+  // Only patterns for this specific business
+  const bizPats=patterns.filter(p=>p.nic_number===biz.nic_number);
+  let html=`<div style="margin-bottom:12px">
+    <div style="font-weight:700;font-size:.97rem;color:var(--pd)">${biz.business_name}</div>
+    <div style="font-size:.8rem;color:var(--ts);margin-top:2px">${biz.nic_number} | ${biz.phone}</div>
+    <div style="font-size:.78rem;color:var(--ts)">${biz.address}</div>
+  </div>`;
+  if(!bizPats.length){html+='<div class="empty"><div class="empty-icon">📭</div><div>රටාවන් නොමැත</div></div>';}
+  else{
+    bizPats.forEach(pat=>{
+      const isSp=pat.category==='spices';
+      const dayLabel=isSp?`${pat.spice_days} දින`:(pat.schedule_days.map(d=>DAYS.find(x=>x.id===d)?.[lang]||d).join(', '));
+      const prepLabel=isSp?'':(pat.is_processed?'සැකසූ (කැපූ)':'සකස් නොකළ (සාමාන්‍ය)');
+      html+=`<div style="border:1.5px solid var(--border);border-radius:var(--rs);margin-bottom:10px;overflow:hidden">
+        <div class="pat-section-hdr">
+          <span>${isSp?'🌶️ කුළු බඩු':'🥦 එළවළු'} — ${dayLabel}${prepLabel?' | '+prepLabel:''}</span>
+          <span style="font-size:.72rem;background:var(--p);color:#fff;border-radius:10px;padding:2px 8px">${pat.items.length} items</span>
+        </div>
+        <table class="stbl" style="font-size:.82rem">
+          <thead><tr><th>#</th><th>භාණ්ඩය</th><th style="text-align:right">ප්‍රමාණය</th></tr></thead>
+          <tbody>${pat.items.map((it,i)=>`<tr>
+            <td>${i+1}</td>
+            <td style="font-weight:600">${lang==='si'?it.display_name_si:it.display_name_ta}</td>
+            <td class="qty">${it.quantity} ${it.unit}</td>
+          </tr>`).join('')}</tbody>
+        </table>
+      </div>`;
+    });
+  }
+  document.getElementById('modal-title').textContent=biz.business_name;
+  document.getElementById('modal-body').innerHTML=html;
+  document.getElementById('modal-detail').classList.add('open');
+}
+
+function confirmModalPattern(){
+  toast('✅ තහවුරු කරන ලදී');closeModal();
+}
+function clearBizPatterns(){
+  if(!activeBizModal)return;
+  if(!confirm('මෙම ව්‍යාපාරයේ සියලු රටාවන් මකා දමන්නද?'))return;
+  patterns=patterns.filter(p=>p.nic_number!==activeBizModal);
+  saveData();toast('🗑 රටාවන් මකා දමන ලදී');
+  renderReports();closeModal();
+}
+function closeModal(e){
+  if(e&&e.target!==e.currentTarget)return;
+  document.getElementById('modal-detail').classList.remove('open');
+  activeBizModal=null;
+}
+
+// ═══════════════════════════════════════════════════════
+//  CLEAR ALL DATA
+// ═══════════════════════════════════════════════════════
+function clearAll(){
+  if(!confirm('සියලු දත්ත මකා දමන්නද? මෙය ප්‍රතිවර්තනය කළ නොහැක.'))return;
+  localStorage.removeItem('syn3_regs');localStorage.removeItem('syn3_pats');
+  regs=[];patterns=[];
+  renderReports();
+  toast('🗑 සියලු දත්ත මකා දමන ලදී');
+}
+
+// ═══════════════════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════════════════
+function toast(msg,type='s'){
+  const el=document.getElementById('toast');
+  el.textContent=msg;
+  el.style.background=type==='e'?'var(--danger)':'var(--pd)';
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2600);
+}
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+loadData();
+renderDayGrid();
+navTo('register');
+</script>
+</body>
+</html>
